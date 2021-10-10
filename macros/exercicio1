@@ -1,0 +1,67 @@
+#include <string>
+void exercicio1()
+{
+int n=10000; //Iniciando o número de pontos
+int j=0;   // Iniciando contador de pontos dentro da esfera
+float x=1; // Iniciando variavel responsável pela cordenada X do ponto
+float y=1; // Iniciando variavel responsável pela cordenada Y do ponto
+TRandom3* r = new TRandom3(); // Criando gerador de numeros aleatorios
+
+
+TCanvas *c1 = new TCanvas("c1","c1",600,600); //Criando canvas
+c1->SetGrid();
+TGraph* gr = new TGraph(n);//Criando TGraph
+c1->DrawFrame(-1.5,-1.5,1.5,1.5);
+gr->Draw("p");
+
+//Loop para preencher n pontos aleatorios no TGraph
+for(int i=0;i<n;i++){
+   x=r->Rndm();
+   y=r->Rndm();
+    
+   //Verificação se o ponto está dentro ou fora da esfera
+   if (x*x + y*y <1){
+   j=j+1; // Caso o ponto esteja dentro da esfera o contador sera somado mais um
+   }
+    
+    
+   //Essa sequencia de ifs é desnecessária para a funcionalidade do código, fiz somente pois não consegui gerar
+   //numeros aleatórios de -1 a 1 e queria fazer o TGraph com a circunferencia por completo, portanto fui criando
+   //pontos em cada quadrante igualmente, isso não afetou a estimativa
+   // estimativa final
+   if (i%4==1){
+   	x=-x;
+   }else if(i%4==2){
+   	x=-x;
+   	y=-y;
+   }else if(i%4==3){
+	y=-y;   
+   }
+   //Inserindo ponto ao TGraph
+   gr->SetPoint(i,x,y);
+   
+}
+cout <<"A estimativa de pi é de: ";
+cout << j*0.0004; //Estava dando erro quando eu tentei fazer j/n então ao inves de multiplicar por 4, multipliquei por 0.0004
+
+// A parte abaixo é somente estética
+TArc *arc = new TArc(0,0,1); //Criando esfera 
+arc->SetLineColor(kRed);
+arc->SetLineWidth(3);
+arc->SetFillStyle(4000);
+arc->Draw();
+TLine *l = new TLine(-1,1,1,1); //Criando primeira linha do quadrado de lado 1
+l->SetLineWidth(3);
+l->Draw();
+TLine *l2 = new TLine(1,1,1,-1);//Criando segunda linha do quadrado de lado 1
+l2->SetLineWidth(3);
+l2->Draw();
+TLine *l3 = new TLine(1,-1,-1,-1);//Criando terceira linha do quadrado de lado 1
+l3->SetLineWidth(3);
+l3->Draw();
+TLine *l4 = new TLine(-1,-1,-1,1);//Criando quarta linha do quadrado de lado 1
+l4->SetLineWidth(3);
+l4->Draw();
+c1->Draw();
+
+}

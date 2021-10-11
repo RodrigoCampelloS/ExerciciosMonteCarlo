@@ -1,0 +1,33 @@
+#include <string>
+void exercicio2()
+{
+
+float n=10000.0; //Iniciando o número de pontos
+int j=0;   // Iniciando contador de pontos dentro da esfera
+float x=1; // Iniciando variavel responsável pela cordenada X do ponto
+float y=1; // Iniciando variavel responsável pela cordenada Y do ponto
+TRandom3* r = new TRandom3(); // Criando gerador de numeros aleatorios
+TCanvas *c1 = new TCanvas("c1","c1",600,600); //Criando canvas
+c1->SetGrid();
+TGraph* gr = new TGraph(n);//Criando TGraph
+c1->DrawFrame(0,0,3,64);
+gr->Draw("p");
+TF1 *f = new TF1("f","(1-x^2)^2",0,3);//Iniciando a função f
+f->Draw();
+
+//Geração dos números aleatórios e utilização do metodo de reijeição
+for(int i=0;i<n;i++){
+   x=3*r->Rndm(); //criando valor de x aleatório
+   y=64*r->Rndm(); //criando valor de y aleatório
+   gr->SetPoint(i,x,y); // inserindo o ponto no gráfico
+   if(pow((1-pow(x,2)),2)>=y){ //Verificar se o ponto está acima ou abaixo da função f
+      j++; //caso o ponto esteja abaixo, o j será acrescido em 1
+   }
+   
+  
+}
+cout << "O valor estimado para a integral pelo método de rejeição é de: " ;
+cout << 3*64*j/n; // (Área do quadrilátero)*(Número de pontos que estão abaixo da função f / (Número de pontos total)
+gr->Draw("P");
+c1->Draw();
+}

@@ -1,0 +1,129 @@
+#include <string>
+void exercicio2()
+{
+//iniciação de variáveis
+float n=10000.0; //Iniciando o número de pontos
+float x=1; // Iniciando variavel responsável pela cordenada X do ponto
+float y=1; // Iniciando variavel responsável pela cordenada Y do ponto
+float s=0; // Iniciando variavel de que será o somatório
+
+//preparando o ambiente
+TRandom3* r = new TRandom3(); // Criando gerador de numeros aleatorios
+TCanvas *c1 = new TCanvas("c1","c1",600,600); //Criando canvas
+c1->SetGrid();
+TGraph* gr = new TGraph(n);//Criando TGraph
+c1->DrawFrame(0,0,3,64);
+gr->Draw("p");
+TF1 *f = new TF1("f","(1-x^2)^2",0,3);//Iniciando a função f
+f->Draw();
+
+//Geração dos números aleatórios e realização do somatório
+for(int i=0;i<n;i++){ // loop para realizar o somatório
+   x=3*r->Rndm(); //criando valor de x aleatório
+   y=64*r->Rndm(); //criando valor de y aleatório (nesse caso só é necessário para inserir no gráfico)
+   gr->SetPoint(i,x,y);  // inserindo o ponto no gráfico
+   s=s+pow((1-pow(x,2)),2); //realizando o somatório
+
+}
+ 
+gr->Draw("P");
+c1->Draw();
+s = s*(3/n); // somatório * ((3-0)/n)
+cout << "O valor estimado para a integral pelo método direto é de: " ;
+cout << s;
+
+
+
+
+/*float n=10000.0; //Iniciando o número de pontos
+int j=0;   // Iniciando contador de pontos dentro da esfera
+float x=1; // Iniciando variavel responsável pela cordenada X do ponto
+float y=1; // Iniciando variavel responsável pela cordenada Y do ponto
+TRandom3* r = new TRandom3(); // Criando gerador de numeros aleatorios
+TCanvas *c1 = new TCanvas("c1","c1",600,600); //Criando canvas
+c1->SetGrid();
+TGraph* gr = new TGraph(n);//Criando TGraph
+c1->DrawFrame(0,0,3,64);
+gr->Draw("p");
+TF1 *f = new TF1("f","(1-x^2)^2",0,3);
+f->Draw();
+for(int i=0;i<n;i++){
+   x=3*r->Rndm();
+   y=64*r->Rndm();
+   gr->SetPoint(i,x,y);
+   if(pow((1-pow(x,2)),2)>=y){
+   j++;
+   }
+   
+  
+}
+cout << "O valor estimado para a integral pelo método de rejeição é de: " ;
+cout << 3*64*j/n;
+gr->Draw("P");
+c1->Draw();
+*/
+/*
+int n=10000; //Iniciando o número de pontos
+int j=0;   // Iniciando contador de pontos dentro da esfera
+float x=1; // Iniciando variavel responsável pela cordenada X do ponto
+float y=1; // Iniciando variavel responsável pela cordenada Y do ponto
+TRandom3* r = new TRandom3(); // Criando gerador de numeros aleatorios
+
+
+TCanvas *c1 = new TCanvas("c1","c1",600,600); //Criando canvas
+c1->SetGrid();
+TGraph* gr = new TGraph(n);//Criando TGraph
+c1->DrawFrame(-1.5,-1.5,1.5,1.5);
+gr->Draw("p");
+
+//Loop para preencher n pontos aleatorios no TGraph
+for(int i=0;i<n;i++){
+   x=r->Rndm();
+   y=r->Rndm();
+    
+   //Verificação se o ponto está dentro ou fora da esfera
+   if (x*x + y*y <1){
+   j=j+1; // Caso o ponto esteja dentro da esfera o contador sera somado mais um
+   }
+    
+    
+   //Essa sequencia de ifs é desnecessária para a funcionalidade do código, fiz somente pois não consegui gerar
+   //numeros aleatórios de -1 a 1 e queria fazer o TGraph com a circunferencia por completo, portanto fui criando
+   //pontos em cada quadrante igualmente, isso não afetou a estimativa
+   // estimativa final
+   if (i%4==1){
+   	x=-x;
+   }else if(i%4==2){
+   	x=-x;
+   	y=-y;
+   }else if(i%4==3){
+	y=-y;   
+   }
+   //Inserindo ponto ao TGraph
+   gr->SetPoint(i,x,y);
+   
+}
+cout <<"A estimativa de pi é de: ";
+cout << j*0.0004; //Estava dando erro quando eu tentei fazer j/n então ao inves de multiplicar por 4, multipliquei por 0.0004
+
+// A parte abaixo é somente estética
+TArc *arc = new TArc(0,0,1); //Criando esfera 
+arc->SetLineColor(kRed);
+arc->SetLineWidth(3);
+arc->SetFillStyle(4000);
+arc->Draw();
+TLine *l = new TLine(-1,1,1,1); //Criando primeira linha do quadrado de lado 1
+l->SetLineWidth(3);
+l->Draw();
+TLine *l2 = new TLine(1,1,1,-1);//Criando segunda linha do quadrado de lado 1
+l2->SetLineWidth(3);
+l2->Draw();
+TLine *l3 = new TLine(1,-1,-1,-1);//Criando terceira linha do quadrado de lado 1
+l3->SetLineWidth(3);
+l3->Draw();
+TLine *l4 = new TLine(-1,-1,-1,1);//Criando quarta linha do quadrado de lado 1
+l4->SetLineWidth(3);
+l4->Draw();
+c1->Draw();
+*/
+}
